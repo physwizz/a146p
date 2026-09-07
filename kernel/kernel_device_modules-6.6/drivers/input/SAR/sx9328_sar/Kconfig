@@ -1,0 +1,8 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Input core configuration
+#
+config SX9328_SAR
+    tristate "Support for SX9328 sar sensor"
+    help
+      Say Y to enable support for SX9328.

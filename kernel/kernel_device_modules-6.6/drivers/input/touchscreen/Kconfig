@@ -1,0 +1,121 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Touchscreen driver configuration
+#
+
+if INPUT_TOUCHSCREEN
+
+config TOUCHSCREEN_MTK_TOUCH
+       string "Touch IC name for Mediatek package"
+       help
+         Set touch IC name if you have touch panel.
+
+         To compile this dirver for used touch IC.
+
+config TOUCHSCREEN_MT6985_ALPHA_SUPPORT
+       tristate "Specify Alpha Touch Platform is mt6985"
+       help
+         Select Alpha Touch Platform is mt6985.
+         To compile this dirver for used touch IC.
+         Set Y or M to select this feature for specific platform-mt6985,
+         and set N to disable.
+
+config TOUCHSCREEN_ILITEK_TOUCH
+       tristate "ILITEK TOUCHSCREEN"
+       help
+         Set Y or M to select this feature for touch compile,
+         and set N to disable.
+
+config TOUCHSCREEN_BOTAI_MULTI_TOUCH
+       tristate "GT9XX MULTIPLE TOUCHSCREEN"
+       help
+         Set Y or M to select this feature for touch compile,
+         and set N to disable.for BoTai touch feature.
+
+config TOUCHSCREEN_GT9XX
+       tristate "GT9XX TOUCHSCREEN FOR CAR SERDES TOUCH"
+       help
+         Set Y or M to select this feature for touch compile,
+         and set N to disable.for car serdes touch feature.
+
+config TOUCHSCREEN_FTS_FT8722
+       tristate "focaltech Touchscreen"
+       help
+         Say Y here if you have Focaltech touch panel.
+         If unsure, say N.
+
+config TOUCHSCREEN_FTS_FT8057S
+       tristate "focaltech Touchscreen"
+       help
+         Say Y here if you have Focaltech touch panel.
+         If unsure, say N.
+
+config TOUCHSCREEN_NT36528_HOSTDL_SPI
+        tristate "NT36528 for Mediatek package"
+        default n
+        help
+          Say Y here if you have NT36672C touch panel.
+
+          If unsure, say N.
+
+          To compile this dirver as a module, choose M here: the
+          module will be called.
+
+config TOUCHSCREEN_ILI7807S
+       tristate "ILI7807S Touchscreen"
+       help
+         Say Y here if you have ILI7807S touch panel.
+         If unsure, say N.
+
+config TOUCHSCREEN_HIMAX_CHIPSET
+       tristate "hx83112f Touchscreen"
+       help
+         Say Y here if you have hx83112f touch panel.
+         If unsure, say N.
+
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/TD4160/Kconfig"
+
+config TOUCHSCREEN_GCORE
+       tristate "GCORE Touchscreen"
+       help
+         Say Y here if you have GCORE touch panel.
+         If unsure, say N.
+
+config TOUCHSCREEN_ICNL9916C
+       tristate "CHIPONE Touchscreen"
+       default n
+       help
+         Say Y here if you have chipone touch panel.
+         If unsure, say N.
+
+config TP_SEC_CMD
+       tristate "TP cmd driver"
+
+config TP_NOTIFY
+       tristate "TP notifier driver"
+
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/ICNL9916C/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/galaxycore/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/FT8057S/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/NT36528/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/FT8722/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/ILI7807S/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/hx83112f/Kconfig"
+config TOUCHSCREEN_FOCALTECH_TOUCH
+       tristate "FOCALTECH TOUCHSCREEN"
+       help
+         Set Y or M to select this feature for touch compile,
+         and set N to disable.for car serdes touch feature.
+
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/BoTai_Multi_Touch/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/GT9966/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/gt9xx/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/ILITEK/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/synaptics_dsx_96789/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/synaptics_dsx_96851/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/NT36532/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/gt9895_brl/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/synaptics_tcm2_sec/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/touchscreen/GT6936/Kconfig"
+
+endif

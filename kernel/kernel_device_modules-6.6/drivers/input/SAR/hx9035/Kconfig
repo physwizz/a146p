@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Input core configuration
+#
+
+config TYHX_HX9035
+    tristate "Support for hx9036 sar sensor"
+    help
+      Say Y to enable support for TYHX_HX9035.

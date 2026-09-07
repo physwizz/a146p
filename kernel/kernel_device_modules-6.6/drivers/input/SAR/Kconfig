@@ -1,0 +1,41 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Input core configuration
+#
+config TYHX_HX9035
+    tristate "Support for hx9036 sar sensor"
+    help
+        Say Y to enable support for TYHX_HX9035.
+
+config INPUT_A96T376
+    tristate "Support for A96T376 sar sensor"
+    help
+        Say Y to enable support for A96T376.
+
+config SX9328_SAR
+    tristate "Support for SX9328 sar sensor"
+    help
+        Say Y to enable support for SX9328.
+
+config HX9023S_SAR
+    tristate "Support for HX9023S sar sensor"
+    help
+        Say Y to enable support for HX9023S_SAR.
+
+config SX9375_SAR
+    tristate "SX937X_SAR_sensor"
+    help
+        Say Y to enable the SAR detection application, if N here not to use the
+        this SAR sensor
+
+config SX9338_SAR
+    tristate "Support for SX9338 sar sensor"
+    help
+      Say Y to enable support for SX9338.
+
+source "$(KCONFIG_EXT_PREFIX)drivers/input/SAR/hx9035/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/SAR/A96T376/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/SAR/hx9023_sar/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/SAR/sx9328_sar/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/SAR/sx9338_sar/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/input/SAR/sx9375_sar/Kconfig"

@@ -1,0 +1,7 @@
+
+config TOUCHSCREEN_GCORE
+       tristate "GCORE Touchscreen"
+       help
+         Say Y here if you have GCORE touch panel.
+         If unsure, say N.
+

@@ -1,0 +1,27 @@
+config CUSTOM_KERNEL_SITUATION
+	bool "mediatek situation sensor tag"
+	help
+	  Kernel space support situation sensor driver.
+	  If the platform is supported for gesture, this
+	  configuration should be configured, and the situation
+	  driver configuration should be configured as well.
+
+config LIFT_TO_WAKE
+    bool  "lift to wake for ss"
+    help
+        A wake is a device,
+        usually portable and electronic
+        or electromechanical,
+        that detect device is picked up with 35 degree.
+
+config SMART_ALERT_HUB
+	bool  "smart_alert_hub for MediaTek package"
+	help
+	  smart_alert is a device,
+	  usually portable and electronic
+	  or electromechanical,
+	  that detect device is picked up with 35 degree.
+
+source "$(KCONFIG_EXT_PREFIX)drivers/misc/mediatek/sensor/1.0/situation/situation_hub/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/misc/mediatek/sensor/1.0/situation/lift_to_wake/Kconfig"
+source "$(KCONFIG_EXT_PREFIX)drivers/misc/mediatek/sensor/1.0/situation/smart_alert/Kconfig"

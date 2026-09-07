@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Input core configuration
+#
+
+config INPUT_A96T376
+    tristate "Support for A96T376 sar sensor"
+    help
+      Say Y to enable support for A96T376.

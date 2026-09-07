@@ -1,0 +1,9 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Input core configuration
+#
+config SX9375_SAR
+    tristate "SX937X_SAR_sensor"
+    help
+        Say Y to enable the SAR detection application, if N here not to use the
+        this SAR sensor

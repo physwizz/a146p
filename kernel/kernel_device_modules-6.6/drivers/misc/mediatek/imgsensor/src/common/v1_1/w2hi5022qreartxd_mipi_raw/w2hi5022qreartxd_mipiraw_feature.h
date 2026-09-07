@@ -1,0 +1,11 @@
+#ifndef _W2_HI5021Q_REAR_TRULY_FEATURE_SENSOR_H
+#define _W2_HI5021Q_REAR_TRULY_FEATURE_SENSOR_H
+//PDAF
+#define ENABLE_PDAF 1
+
+#define per_frame 1
+
+#define MULTI_WRITE 1
+
+#define HI5022Q_XGC_FEATURE_ENABLE 1
+#endif

@@ -1,0 +1,11 @@
+# SPDX-License-Identifier: GPL-2.0-only
+#
+# Touchscreen driver configuration
+#
+
+config TOUCHSCREEN_ICNL9916C
+       tristate "CHIPONE TOUCHSCREEN"
+       default n
+       help
+         Say Y here if you have chipone touch panel.
+         If unsure, say N.

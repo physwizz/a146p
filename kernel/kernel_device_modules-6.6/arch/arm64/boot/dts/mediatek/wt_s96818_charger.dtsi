@@ -1,0 +1,359 @@
+// SPDX-License-Identifier: (GPL-2.0 OR MIT)
+/*
+ * Copyright (c) 2021 MediaTek Inc.
+*/
+
+&i2c6 {
+	//aw35615 dev
+	clock-frequency = <1000000>;
+	status = "okay";
+
+	rt1711_typec: rt1711h@4e {
+		compatible = "richtek,rt1711h";
+		reg = <0x4e>;
+		status = "okay";
+		rt-tcpc,name = "type_c_port0"; /* tcpc_device's name */
+		rt-tcpc,role-def = <5>; /* 0: Unknown, 1: SNK, 2: SRC */
+					/* 3: DRP, 4: Try.SRC, 5: Try.SNK */
+		rt-tcpc,rp-level = <0>; /* 0: Default, 1: 1.5, 2: 3.0 */
+		rt-tcpc,vconn-supply = <1>; /* 0: Never, 1: Always, */
+					    /* 2: EMarkOnly, 3: StartOnly */
+		rt1711pd,intr-gpio = <&pio 4 0x0>;
+		rt1711pd,intr-gpio-num = <4>;
+		//charger = <&wt_chargers>;
+		pd-data {
+			pd,vid = <0x29cf>;
+			pd,pid = <0x1711>;
+			pd,source-cap-ext = /bits/ 8 <0xcf 0x29 0x11 0x17
+						      0x00 0x00 0x00 0x00
+						      0x00 0x00 0x00 0x00
+						      0x00 0x00 0x00 0x00
+						      0x00 0x00 0x00 0x00
+						      0x00 0x00 0x01 0x02
+						      0x00>;
+			pd,sink-cap-ext = /bits/ 8 <0xcf 0x29 0x11 0x17
+						    0x00 0x00 0x00 0x00
+						    0x00 0x00 0x01 0x00
+						    0x00 0x00 0x00 0x00
+						    0x01 0x0b 0x01 0x0a
+						    0x0a 0x00 0x00 0x00>;
+			pd,mfrs = "RichtekTCPC";
+
+			/*
+			 *	VSAFE5V = 0, MAX_POWER = 1, CUSTOM = 2,
+			 *	MAX_POWER_LV = 0x21, MAX_POWER_LVIC = 0x31
+			 *	MAX_POWER_HV = 0x41, MAX_POWER_HVIC = 0x51
+			 */
+			pd,charging-policy = <0x31>;
+
+			/*
+			 * Fixed 5V, 500 mA <0x00019032>
+			 * Fixed 5V, 1A <0x00019064>
+			 * Fixed 5V, 2A <0x000190c8>
+			 * Fixed 5V, 3A <0x0001912c>
+			 * Fixed 9V, 500 mA <0x0002d032>
+			 * Fixed 9V, 1A <0x0002d064>
+			 * Fixed 9V, 2A <0x0002d0c8>
+			 * Fixed 9V, 3A <0x0002d12c>
+                         * Fixed 9V, 1.5A <0x0002d096>
+                         * Fixed 9V, 1.67A <0x0002d0a7>
+
+			 * Variable 5-9V, 1A <0x8642d064>
+			 * Variable 5-9V, 2A <0x8642d0c8>
+			 * Variable 5-9V, 3A <0x8642d12c>
+			 */
+			pd,source-pdo-size = <1>;
+			pd,source-pdo-data = <0x00019096>; /* 5V, 1500 mA */
+			//pd,sink-pdo-size = <1>;
+			//pd,sink-pdo-data = <0x000190c8>;
+			pd,sink-pdo-size = <2>;
+			pd,sink-pdo-data = <0x000190c8 0x0002d0a7>;
+
+			/*
+			 * No DP, host + device
+			 *	pd,id-vdo-size = <6>;
+			 *	pd,id-vdo-data = <0xd14029cf 0x0 0x17110000
+						  0x61000000 0x0 0x41000000>;
+			 * With DP Sink capability
+			 *	pd,id-vdo-size = <6>;
+			 *	pd,id-vdo-data = <0xd54029cf 0x0 0x17110000
+						  0x61000000 0x0 0x41000000>;
+			 */
+
+			pd,id-vdo-size = <6>;
+			pd,id-vdo-data = <0xd14029cf 0x0 0x17110000
+					  0x61000000 0x0 0x41000000>;
+
+			bat,nr = <1>;
+			pd,country-nr = <0>;
+
+			bat-info0 {
+				bat,vid = <0x29cf>;
+				bat,pid = <0x1711>;
+				bat,mfrs = "bat1";
+				bat,design-cap = <3000>;
+			};
+		};
+		dpm-caps {
+			local-dr-power;
+			local-dr-data;
+			// local-ext-power;
+			local-usb-comm;
+			// local-usb-suspend;
+			// local-high-cap;
+			// local-give-back;
+			local-no-suspend;
+
+			/* With DP Source capability */
+			// attempt-enter-dp-mode;
+			// attempt-discover-cable;
+			// attempt-discover-id;
+			// attempt-discover-svids;
+
+			/* 0: disable, 1: prefer-snk, 2: prefer-src */
+			pr-check = <0>;
+			// pr-reject-as-source;
+			// pr-reject-as-sink;
+			// pr-check-gp-source;
+			// pr-check-gp-sink;
+
+			/* 0: disable, 1: prefer-ufp, 2: prefer-dfp */
+			dr-check = <0>;
+			// dr-reject-as-dfp;
+			// dr-reject-as-ufp;
+		};
+		displayport {
+			/* connection type = "both", "ufp-d", "dfp-d" */
+			1st-connection = "dfp-d";
+			2nd-connection = "dfp-d";
+			// usbr20-not-used;
+			typec,receptacle;
+			ufp-d {
+				// pin-assignment,mode-c;
+				// pin-assignment,mode-d;
+				// pin-assignment,mode-e;
+			};
+			dfp-d {
+				pin-assignment,mode-c;
+				pin-assignment,mode-d;
+				pin-assignment,mode-e;
+			};
+		};
+	};
+
+	// SPDX-License-Identifier: GPL-2.0
+	aw35615@22 {
+		compatible = "awinic,aw35615";
+		reg = <0x22>;
+		awinic,int_n = <&pio 4 0>;
+		aw35615,snk_pdo_size = <2>; /* set sink pdo num*/
+		aw35615,snk_pdo_vol = <5000 9000>; /* set sink pdo voltage mV*/
+		aw35615,snk_pdo_cur = <2000 1670>; /* set sink pdo current mA*/
+		aw35615,snk_pps_size = <0>; /* set sink pps num*/
+		aw35615,snk_pps_vol = <0>; /* set sink pps voltage mV*/
+		aw35615,snk_pps_cur = <0>; /* set sink pps current mA*/
+		aw35615,src_pdo_size = <1>; /* set source pdo num*/
+		aw35615,src_pdo_vol = <5000>; /* set source pdo voltage mV*/
+		aw35615,src_pdo_cur = <1000>; /* set source pdo current mA*/
+		aw35615,src_pps_size = <0>; /* set sink pps num*/
+		aw35615,src_pps_vol = <0>; /* set sink pps voltage mV*/
+		aw35615,src_pps_cur = <0>; /* set sink pps current mA*/
+		aw35615,snk_tog_time = <0x36>; /* set toggle sink time */
+		aw35615,src_tog_time = <0x36>; /* set toggle source time */
+		aw35615,cc1_ov_th = <0x7>; /* set cc1 ov threshold */
+		aw35615,cc2_ov_th = <0x7>; /* set cc2 ov threshold */
+		aw35615,lpd_tim_set = <0x4>; /* set the LPD sensitivity */
+		status = "okay";
+	};
+};
+
+&i2c7 {
+	wt_chargers:wt_chargers@6B {
+		compatible = "bigmtech,sd7601d","upm,upm6910d";
+		reg = <0x6B>;
+		bootmode = <&chosen>;
+		charger_name = "primary_chg";
+		load_switch_name = "primary_load_switch";
+		intr_gpio = <&pio 7 0x0>;
+		status = "okay";
+
+		bigm,alias_name = "sd7601d";
+		bigm,vlimit_mv = <4500>;
+		bigm,ilimit_ma = <3000>;
+		bigm,vsysmin_mv = <3400>;
+		bigm,cc_ma = <3000>;
+		bigm,cv_mv = <4400>;
+		bigm,pre_ma = <540>;
+		bigm,eoc_ma = <240>;
+		bigm,rechg_mv = <100>;
+		bigm,target_hv = <0>;
+
+		upm,eint_name = "upm6910";
+		upm,upm6910,charge-detect-enable;
+		upm,upm6910,usb-vlim = <4500>;
+		upm,upm6910,usb-ilim = <2000>;
+		upm,upm6910,usb-vreg = <4200>;
+		upm,upm6910,usb-ichg = <2000>;
+		upm,upm6910,stat-pin-ctrl = <0>;
+		upm,upm6910,precharge-current = <180>;
+		upm,upm6910,termination-current = <240>; //set eoc current 240mA
+		upm,upm6910,boost-voltage = <5150>; //set otg voltage 5.15V
+		upm,upm6910,boost-current = <1200>;
+		upm,upm6910,vac-ovp-threshold = <14000>;
+
+		io-channels = <&pmic_auxadc AUXADC_VCDT>;
+		io-channel-names = "vbus_dect";
+
+		charger = <&wt_chargers>;
+		bc12_sel = <&mtk_ctd>;
+		phys = <&u2port0 PHY_TYPE_USB2>;
+		phy-names = "usb2-phy";
+		usb = <&usb>;
+		usb_otg_vbus: otg {
+			//enable-gpios = <&gpio GPIOH_4 0>;
+			regulator-compatible = "usb-otg-vbus";
+			regulator-name = "usb-otg-vbus";
+			regulator-min-microvolt = <4350000>;
+			regulator-max-microvolt = <5800000>;
+			regulator-min-microamp = <500000>;
+			regulator-max-microamp = <3000000>;
+		};
+	};
+
+	sp2130-standalone@6D {
+		status = "ok";
+		compatible = "sp2130-standalone";
+		reg = <0x6D>;
+		irq-gpios = <&pio 21 0>;
+
+		sp2130,bat-ovp-alarm-disable;
+		sp2130,bat-ucp-alarm-disable;
+		sp2130,bat-ucp-disable;
+		sp2130,bat-therm-disable;
+		sp2130,bus-therm-disable;
+		sp2130,die-therm-disable;
+
+		sp2130,bat-ovp-threshold = <4525>;
+		sp2130,bat-ovp-alarm-threshold = <4490>;
+		sp2130,bat-ocp-threshold = <7000>;
+		sp2130,bat-ocp-alarm-threshold = <6000>;
+		sp2130,bus-ovp-threshold = <11000>;
+		sp2130,bus-ovp-alarm-threshold = <11000>;
+
+		sp2130,bat-therm-threshold = <0x15>;
+		sp2130,bus-therm-threshold = <0x15>;
+		sp2130,die-therm-threshold = <145>;
+
+		sp2130,ac-ovp-threshold = <11000>;
+		sp2130,sense-resistor-mohm = <2>;
+	};
+
+	upm6720@65 {
+		status = "ok";
+		compatible = "unisemipower,upm6720-standalone";
+		reg = <0x65>;
+		irq-gpios = <&pio 21 0>;
+		chg_name = "primary_dvchg";
+
+		// upm6720,bat-ovp-disable;
+		upm6720,bat-ocp-disable;
+		upm6720,bat-ocp-alm-disable;
+		// upm6720,bus-ucp-disable;
+		// upm6720,bus-rcp-disable;
+		// upm6720,vout-ovp-disable;
+		// upm6720,tdie-flt-disable;
+		upm6720,tsbus-flt-disable;
+		upm6720,tsbat-flt-disable;
+		upm6720,wdt-disable;
+		upm6720,vbus-errhi-disable;
+
+		upm6720,bat-ovp-threshold = <4525>;	/* unit: 1mV */
+		upm6720,bat-ocp-threshold = <8200>;	/* unit: 1mA */
+		upm6720,bus-ovp-threshold = <10500>;	/* unit: 1mV set as 10.5V */
+		upm6720,bus-ocp-threshold = <3500>;	/* unit: 1mA */
+		upm6720,bus-ucp-threshold = <250>;	/* unit: 1mA */
+		upm6720,bus-rcp-threshold = <300>;	/* unit: 1mA */
+		upm6720,vac1-ovp-threshold = <10500>;	/* unit: 1mV programmed threshold set as 10.5V */
+		upm6720,vac2-ovp-threshold = <10500>;	/* unit: 1mV programmed threshold set as 10.5V */
+		upm6720,vout-ovp-threshold = <5000>;	/* unit: 1mV */
+		upm6720,tdie-flt-threshold = <140>;	/* unit: 1℃ */
+		upm6720,tsbus-flt-threshold = <4102>;	/* unit: 0.001% */
+		upm6720,tsbat-flt-threshold = <4102>;	/* unit: 0.001% */
+
+		// upm6720,bat-ovp-mask;
+		// upm6720,bat-ocp-mask;
+		// upm6720,bus-ovp-mask;
+		// upm6720,bus-ocp-mask;
+		// upm6720,bus-ucp-mask;
+		// upm6720,bus-rcp-mask;
+		// upm6720,vout-ovp-mask;
+		// upm6720,vac1-ovp-mask;
+		// upm6720,vac2-ovp-mask;
+
+		// upm6720,vout-present-mask;
+		// upm6720,vac1-present-mask;
+		// upm6720,vac2-present-mask;
+		// upm6720,vbus-present-mask;
+		// upm6720,acrb1-config-mask;
+		// upm6720,acrb2-config-mask;
+		// upm6720,cfly-short-mask;
+		// upm6720,adc-done-mask;
+		// upm6720,ss-timeout-mask;
+		// upm6720,tsbus-flt-mask;
+		// upm6720,tsbat-flt-mask;
+		// upm6720,tdie-flt-mask;
+		// upm6720,wd-mask;
+		// upm6720,regn-good-mask;
+		// upm6720,conv-active-mask;
+		// upm6720,vbus-errhi-mask;
+
+		// upm6720,bat-ovp-alm-disable;
+		// upm6720,bat-ocp-alm-disable;
+		// upm6720,bat-ucp-alm-disable;
+		// upm6720,bus-ovp-alm-disable;
+		// upm6720,tdie-alm-disable;
+
+		upm6720,bat-ovp-alm-threshold = <4510>;		/* unit: 1mV */
+		upm6720,bat-ocp-alm-threshold = <8000>;		/* unit: 1mA */
+		upm6720,bat-ucp-alm-threshold = <0>;		/* unit: 1mA */
+		upm6720,bus-ovp-alm-threshold = <11800>;	/* unit: 1mV */
+		upm6720,bus-ocp-alm-threshold = <5000>;		/* unit: 1mA */
+		upm6720,tdie-alm-threshold = <125>;		/* unit: 1℃ */
+
+		// upm6720,bat-ovp-alm-mask;
+		// upm6720,bat-ocp-alm-mask;
+		// upm6720,bat-ucp-alm-mask;
+		// upm6720,bus-ovp-alm-mask;
+		// upm6720,bus-ocp-alm-mask;
+		// upm6720,tsbus-tsbat-alm-mask;
+		// upm6720,tdie-alm-mask;
+
+		// upm6720,bus-pulldown-en;
+		// upm6720,vac1-pulldown-en;
+		// upm6720,vac2-pulldown-en;
+
+		upm6720,sense-resistor-mohm = <5>;	/* unit: 1mohm */
+		upm6720,ss-timeout = <10000>;		/* unit: 1ms */
+		upm6720,wdt-set = <30000>;		/* unit: 1ms */
+		upm6720,chg-config-1 = <1>;
+		upm6720,fsw-set = <500>;
+		upm6720,freq-shift = <0>;
+		upm6720,ibus-ucp-fall-dg-sel = <0>;
+
+		upm6720,adc-enable;
+		upm6720,adc-rate = <0>;
+		upm6720,adc-avg = <0>;
+		upm6720,adc-avg-init = <0>;
+		upm6720,adc-sample-bit = <0>;
+		// upm6720,ibus-adc-disable;
+		// upm6720,vbus-adc-disable;
+		// upm6720,vac1-adc-disable;
+		// upm6720,vac2-adc-disable;
+		// upm6720,vout-adc-disable;
+		// upm6720,vbat-adc-disable;
+		// upm6720,ibat-adc-disable;
+		// upm6720,tsbus-adc-disable;
+		// upm6720,tsbat-adc-disable;
+		// upm6720,tdie-adc-disable;
+	};
+};

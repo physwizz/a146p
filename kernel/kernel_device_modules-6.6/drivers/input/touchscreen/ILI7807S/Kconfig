@@ -1,0 +1,10 @@
+#
+# ILI7807S Touchscreen driver configuration
+#
+config TOUCHSCREEN_ILI7807S
+    tristate "ILI7807S Touchscreen"
+    default n
+    help
+      Say Y here if you have ILI7807S touch panel.
+      If unsure, say N.
+

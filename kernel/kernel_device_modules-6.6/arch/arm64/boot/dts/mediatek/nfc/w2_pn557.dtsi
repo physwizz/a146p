@@ -1,0 +1,15 @@
+&i2c3 {
+	#address-cells = <1>;
+	#size-cells = <0>;
+	clock-frequency = <400000>;
+	mediatek,use-open-drain;
+    nfc-nxp@28 {
+                 compatible = "nxp,sn-nci";
+                 reg = <0x28>;
+                 status = "okay";
+                 nxp,sn-irq = <&pio 5 0x0>;/*gpio_5*/
+                 nxp,sn-dwl-req = <&pio 6 0x0>;/*gpio_6*/
+                 nxp,sn-ven-rstn = <&pio 7 0x0>;/*gpio_7*/
+
+         };
+};
